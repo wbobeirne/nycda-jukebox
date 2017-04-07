@@ -1,0 +1,4 @@
+.jukebox-controls .isDisabled {
+	opacity: 0.5;
+	pointer-events: none;
+}

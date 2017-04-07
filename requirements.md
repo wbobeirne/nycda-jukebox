@@ -1,4 +1,4 @@
-* Create JS object called Jukebox
+* Create JS singleton called Jukebox
   * Jukebox should store song objects (array?)
 	* Functions for play(), pause(), stop()
 	* Function for switch() or change() songs
