@@ -28,13 +28,16 @@ var Jukebox = {
 	},
 
 	listen: function() {
-		this.dom.play.on("click", this.play.bind(this));
-		this.dom.stop.on("click", this.stop.bind(this));
-		this.dom.next.on("click", this.skip.bind(this));
+		this.dom.play.on("click", function() {
+			this.play();
+		}.bind(this));
 
 		this.dom.mute.on("click", function() {
 			this.setVolume(0);
 		}.bind(this));
+
+		this.dom.stop.on("click", this.stop.bind(this));
+		this.dom.next.on("click", this.skip.bind(this));
 	},
 
 	render: function() {
@@ -133,11 +136,4 @@ class Song {
 
 $(document).ready(function() {
 	Jukebox.start();
-
-	if (Jukebox.play()) {
-		alert("Rock on dude!");
-	}
-	else {
-		alert("Bummer, no song!");
-	}
 });
