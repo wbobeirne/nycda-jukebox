@@ -1,4 +1,122 @@
-.jukebox-controls .isDisabled {
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+
+.jukebox {
+	min-height: 100vh;
+	background: #FAFAFA;
+	padding-top: 45px; /* header height */
+	padding-bottom: 55px; /* controls height */
+	font-family: "Helvetica Neue", Helvetica, Arial, Sans;
+}
+
+/****************
+     HEADER
+****************/
+.jukebox-header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 45px;
+	padding: 0 15px;
+	background: #FFF;
+	border-bottom: 1px solid #CCC;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+}
+
+.jukebox-header-logo {
+	float: left;
+	margin-top: 10px;
+	height: 25px;
+	width: 160px;
+	background-image: url("../assets/logo.svg");
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0.9;
+}
+
+.jukebox-header-upload {
+	float: right;
+	margin-top: 12px;
+}
+
+/****************
+     CONTROLS
+****************/
+.jukebox-controls {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 55px;
+	padding: 17px 15px;
+	background: #FFF;
+	border-top: 1px solid #CCC;
+	box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+	text-align: center;
+}
+
+.jukebox-controls-btn.isDisabled {
 	opacity: 0.5;
 	pointer-events: none;
+}
+
+
+/****************
+      SONGS
+****************/
+.jukebox-songs {
+	max-width: 880px;
+	width: 100%;
+	padding: 20px;
+	margin: 0 auto;
+}
+
+.jukebox-songs-song {
+	padding: 0 8px;
+	height: 50px;
+	line-height: 50px;
+	margin-bottom: 8px;
+	background: #FFF;
+	border-radius: 4px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+	            0 1px 4px rgba(0, 0, 0, 0.24);
+	cursor: pointer;
+}
+
+.jukebox-songs-song-pic,
+.jukebox-songs-song-title,
+.jukebox-songs-song-artist,
+.jukebox-songs-song-duration {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.jukebox-songs-song-pic {
+	width: 32px;
+	height: 32px;
+	margin-top: 9px;
+	background-color: #CCD0D9;
+	border-radius: 2px;
+	margin-right: 10px;
+}
+
+.jukebox-songs-song-title {
+	margin-right: 10px;
+	font-size: 16px;
+	color: #222;
+}
+
+.jukebox-songs-song-artist {
+	color: #999;
+	font-size: 12px;
+}
+
+.jukebox-songs-song-duration {
+	float: right;
+	font-size: 13px;
+	padding-right: 10px;
+	color: #CCC;
 }
