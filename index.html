@@ -11,11 +11,15 @@
 		<div class="jukebox">
 			<div class="jukebox-header">
 				<div class="jukebox-header-logo"></div>
-				<input class="jukebox-header-upload" type="file"/>
+				<label class="jukebox-header-upload">
+					Upload
+					<input type="file" accept="audio/*" multiple/>
+				</label>
 			</div>
 			<div class="jukebox-songs"></div>
 			<div class="jukebox-controls">
 				<button class="jukebox-controls-btn jukebox-controls-previous">Previous</button>
+				<button class="jukebox-controls-btn jukebox-controls-shuffle">Shuffle</button>
 				<button class="jukebox-controls-btn jukebox-controls-play">Play</button>
 				<button class="jukebox-controls-btn jukebox-controls-stop">Stop</button>
 				<button class="jukebox-controls-btn jukebox-controls-next">Next</button>

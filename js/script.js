@@ -19,7 +19,7 @@ var Jukebox = {
 			next: $(".jukebox-controls-next"),
 			prev: $(".jukebox-controls-previous"),
 			mute: $(".jukebox-controls-mute"),
-			upload: $(".jukebox-header-upload"),
+			upload: $(".jukebox-header-upload input"),
 			songs: $(".jukebox-songs"),
 		};
 
@@ -69,6 +69,7 @@ var Jukebox = {
 
 		this.dom.upload.on("change", function() {
 			var files = this.dom.upload.prop("files");
+			console.log(files);
 
 			for (var i = 0; i < files.length; i++) {
 				var file = URL.createObjectURL(files[i]);

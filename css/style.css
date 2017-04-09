@@ -52,7 +52,21 @@ White BG: #FFF;
 
 .jukebox-header-upload {
 	float: right;
-	margin-top: 12px;
+	height: 45px;
+	width: 65px;
+	background-image: url('../assets/upload.svg');
+	background-size: auto 50%;
+	background-position: center;
+	background-repeat: no-repeat;
+	overflow: hidden;
+	text-indent: -999px;
+	cursor: pointer;
+}
+
+/* Hide the input, the label will trigger it and we can style the label */
+.jukebox-header-upload input {
+	position: relative;
+	top: -999px;
 }
 
 /****************
