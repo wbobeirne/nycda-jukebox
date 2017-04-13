@@ -1,7 +1,13 @@
 /* globals $ */
 
 /**
- * JUKEBOX SINGLETON
+ * Jukebox Singleton
+ * @namespace
+ * @property {array} songs - List of songs available in the app
+ * @property {Song} activeSong - The song currently selected
+ * @property {number} volume - Number between 1 and 100, the current volume
+ * @property {boolean} isPlaying - Whether or not the activeSong is playing
+ * @property {object} dom - Cached dom elements relevant to Jukebox
  */
 var Jukebox = {
 	songs: [],
@@ -10,7 +16,10 @@ var Jukebox = {
 	isPlaying: false,
 	dom: {},
 
-	// Run this function to kick the whole thing off
+	/**
+	 * This function caches all selectors, binds all events, and does the initial
+	 * render. Should be run once to kick off the jukebox.
+	 */
 	start: function() {
 		// Grab the dom elements
 		this.dom = {
@@ -43,6 +52,9 @@ var Jukebox = {
 		this.listen();
 	},
 
+	/**
+	 * Binds all event listeners. Must run `start()` before running this.
+	 */
 	listen: function() {
 		this.dom.play.on("click", function() {
 			if (this.isPlaying) {
@@ -81,6 +93,10 @@ var Jukebox = {
 		}.bind(this));
 	},
 
+	/**
+	 * Updates the state of the DOM to match the state of the Jukebox. Must run
+	 * `start()` before running this.
+	 */
 	render: function() {
 		// Render song elements
 		this.dom.songs.html("");
@@ -98,13 +114,19 @@ var Jukebox = {
 		this.dom.stop.toggleClass("isDisabled", !this.isPlaying);
 	},
 
+	/**
+	 * Plays a song. If passed a song, sets that to the activeSong. Otherwise
+	 * plays the current activeSong. If no activeSong, returns null.
+	 * @param {Song} [song] - Song to play, if changing from activeSong
+	 * @returns {Song} The song that was played, or null if no song played
+	 */
 	play: function(song) {
 		if (song) {
 			this.change(song);
 		}
 
 		if (!this.activeSong) {
-			return false;
+			return null;
 		}
 
 		this.isPlaying = true;
@@ -113,9 +135,13 @@ var Jukebox = {
 		return this.activeSong;
 	},
 
+	/**
+	 * Pauses a song, if one is playing. Otherwise, it's a no-op.
+	 * @returns {Song} The song that was paused, or null if no song played
+	 */
 	pause: function() {
 		if (!this.activeSong) {
-			return false;
+			return null;
 		}
 
 		this.isPlaying = false;
@@ -124,6 +150,11 @@ var Jukebox = {
 		return this.activeSong;
 	},
 
+	/**
+	 * Stops the song, and sets its playing progress to zero. If no activeSong,
+	 * it's a no-op.
+	 * @returns {Song} The song that was stopped, or null if no song played
+	 */
 	stop: function() {
 		if (!this.activeSong) {
 			return false;
@@ -135,6 +166,12 @@ var Jukebox = {
 		return this.activeSong;
 	},
 
+	/**
+	 * Changes the currently active song, and stops the previous one if there was
+	 * one.
+	 * @param {Song} song - The new Song to be activeSong
+	 * @returns {Song} The passed song param
+	 */
 	change: function(song) {
 		if (this.activeSong) {
 			this.activeSong.stop();
@@ -145,6 +182,11 @@ var Jukebox = {
 		return this.activeSong;
 	},
 
+	/**
+	 * Skips the current song in a direction. Can skip forwards, or backwards.
+	 * @param {number} direction - Positive or negative number indicating how many to skip
+	 * @returns {Song} Returns the new activeSong
+	 */
 	skip: function(direction) {
 		if (!this.activeSong) {
 			return false;
@@ -161,10 +203,21 @@ var Jukebox = {
 		return this.change(this.songs[desiredIndex]);
 	},
 
+	/**
+	 * Shuffle the order of music.
+	 */
 	shuffle: function() {
 		console.log("Jukebox is shuffleing");
 	},
 
+	/**
+	 * Given a file and some info, add a new song.
+	 * @param {string} file - Relative path, URL, or data blob string for the song
+	 * @param {object} meta - Information about the song
+	 * @param {string} meta.title - Name of the song
+	 * @param {string} meta.artist - Name of the artist
+	 * @returns {Song} The newly made song
+	 */
 	addSong: function(file, meta) {
 		var song = new Song(file, meta);
 		this.songs.push(song);
@@ -181,9 +234,16 @@ var Jukebox = {
 
 
 /**
- * SONG CLASS
+ * Song Class
  */
 class Song {
+	/**
+	 * Create a new song
+	 * @param {string} file - Relative path, URL, or data blob string for the song
+	 * @param {object} meta - Information about the song
+	 * @param {string} meta.title - Name of the song
+	 * @param {string} meta.artist - Name of the artist
+	 */
 	constructor(file, meta) {
 		this.file = file;
 		this.meta = meta || {
@@ -193,6 +253,10 @@ class Song {
 		this.audio = new Audio(file);
 	}
 
+	/**
+	 * Render the song as markup.
+	 * @returns {jQuery} The song, not added to the dom yet
+	 */
 	render() {
 		var $song = $('<div class="jukebox-songs-song"></div>');
 		$song.append('<div class="jukebox-songs-song-pic"></div>');
@@ -203,14 +267,23 @@ class Song {
 		return $song;
 	}
 
+	/**
+	 * Play the song.
+	 */
 	play() {
 		this.audio.play();
 	}
 
+	/**
+	 * Pause the song.
+	 */
 	pause() {
 		this.audio.pause();
 	}
 
+	/**
+	 * Stop the song, resetting it to the start.
+	 */
 	stop() {
 		this.audio.pause();
 		this.audio.currentTime = 0;
