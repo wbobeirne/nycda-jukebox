@@ -21,6 +21,9 @@ var Jukebox = {
 	 * render. Should be run once to kick off the jukebox.
 	 */
 	start: function() {
+		// Initialize the SoundCloud API
+		SC.initialize({ client_id: "fd4e76fc67798bfa742089ed619084a6" });
+
 		// Grab the dom elements
 		this.dom = {
 			play: $(".jukebox-controls-play"),
@@ -45,6 +48,7 @@ var Jukebox = {
 			title: "Coastal Brake",
 			artist: "Tycho",
 		});
+		this.addSong("https://soundcloud.com/viceroymusic/50-cent-disco-inferno-viceroy-jet-life-remix");
 		this.change(this.songs[0]);
 
 		// Render and bind!
@@ -219,7 +223,15 @@ var Jukebox = {
 	 * @returns {Song} The newly made song
 	 */
 	addSong: function(file, meta) {
-		var song = new Song(file, meta);
+		var song;
+
+		if (file.indexOf("soundcloud.com") !== -1) {
+			song = new SoundCloudSong(file);
+		}
+		else {
+			song = new FileSong(file, meta);
+		}
+
 		this.songs.push(song);
 		this.render();
 		return song;
@@ -234,23 +246,16 @@ var Jukebox = {
 
 
 /**
- * Song Class
+ * Song Class. Only meant to be extended, does not do anything on its own.
  */
 class Song {
 	/**
-	 * Create a new song
-	 * @param {string} file - Relative path, URL, or data blob string for the song
-	 * @param {object} meta - Information about the song
-	 * @param {string} meta.title - Name of the song
-	 * @param {string} meta.artist - Name of the artist
+	 * Create a new song.
 	 */
-	constructor(file, meta) {
-		this.file = file;
-		this.meta = meta || {
-			title: "Unknown title",
-			artist: "Unknown artist",
-		};
-		this.audio = new Audio(file);
+	constructor() {
+		this.file = null;
+		this.meta = {};
+		this.audio = null;
 	}
 
 	/**
@@ -287,6 +292,57 @@ class Song {
 	stop() {
 		this.audio.pause();
 		this.audio.currentTime = 0;
+	}
+}
+
+/**
+ * FileSong Class
+ */
+class FileSong extends Song {
+	/**
+	 * Create a new song from a file (Remote or local)
+	 * @param {string} file - Relative path, URL, or data blob string for the song
+	 * @param {object} meta - Information about the song
+	 * @param {string} meta.title - Name of the song
+	 * @param {string} meta.artist - Name of the artist
+	 */
+	constructor(file, meta) {
+		super();
+		this.file = file;
+		this.meta = meta || {
+			title: "Unknown title",
+			artist: "Unknown artist",
+		};
+		this.audio = new Audio(file);
+	}
+}
+
+/**
+ * SoundCloudSong Class
+ */
+class SoundCloudSong extends Song {
+	/**
+	 * Create a new song from a SoundCloud URL. All other information is derived
+	 * from SoundCloud's API.
+	 * @param {string} url - Full soundcloud URL
+	 */
+	constructor(url) {
+		super();
+
+		// Convert the URL to an object with metadata from the API
+		SC.resolve(url)
+			// Assign that metadata to the song object
+			.then(function(song) {
+				this.meta = {
+					title: song.title,
+					artist: song.user.username,
+				};
+				return song;
+			}.bind(this))
+			// Create the Audio instance from the song's uri
+			.then(function(song) {
+				this.audio = new Audio(song.uri + "/stream?client_id=fd4e76fc67798bfa742089ed619084a6");
+			}.bind(this));
 	}
 }
 
