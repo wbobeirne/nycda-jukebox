@@ -1,4 +1,4 @@
-/* globals $ */
+/* globals $, SC */
 
 /**
  * Jukebox Singleton
@@ -341,7 +341,8 @@ class SoundCloudSong extends Song {
 			}.bind(this))
 			// Create the Audio instance from the song's uri
 			.then(function(song) {
-				this.audio = new Audio(song.uri + "/stream?client_id=fd4e76fc67798bfa742089ed619084a6");
+				var uri = song.uri + "/stream?client_id=fd4e76fc67798bfa742089ed619084a6";
+				this.audio = new Audio(uri);
 			}.bind(this));
 	}
 }
