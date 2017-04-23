@@ -130,19 +130,23 @@ White BG: #FFF;
 }
 
 .jukebox-controls-play {
-	top: -8px;
 	background-image: url("../assets/play.svg");
 	background-color: #6C2CC7;
 	background-size: 45%;
 	background-position: 55% 50%;
 	box-shadow: 0 3px 4px -1px rgba(0, 0, 0, 0.25);
 	border-radius: 100%;
+
+	transform: translateY(-8px);
+	transition-property: box-shadow, background-color, transform;
+	transition-duration: 125ms;
+	transition-timing-function: ease;
 }
 .jukebox-controls-play:hover {
 	background-color: #8039E5;
 }
 .jukebox-controls-play:active {
-	top: -6px;
+	transform: translateY(-6px);
 	box-shadow: 0 1px 2px -1px rgba(0, 0, 0, 0.9);
 }
 .jukebox-controls-play.isPlaying {
@@ -161,6 +165,17 @@ White BG: #FFF;
 	margin: 0 auto;
 }
 
+@keyframes song-slide-in {
+	0% {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0px);
+	}
+}
+
 .jukebox-songs-song {
 	padding: 0 8px;
 	height: 50px;
@@ -171,6 +186,11 @@ White BG: #FFF;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
 	            0 1px 4px rgba(0, 0, 0, 0.24);
 	cursor: pointer;
+	transition: transform 100ms ease;
+	animation: song-slide-in 300ms ease 1;
+}
+.jukebox-songs-song:hover {
+	transform: scale(1.01);
 }
 
 .jukebox-songs-song-pic,

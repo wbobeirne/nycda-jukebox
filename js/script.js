@@ -103,13 +103,14 @@ var Jukebox = {
 	 */
 	render: function() {
 		// Render song elements
-		this.dom.songs.html("");
 		for (var i = 0; i < this.songs.length; i++) {
 			var $song = this.songs[i].render();
-			this.dom.songs.append($song);
 
 			if (this.songs[i] === this.activeSong) {
 				$song.addClass("isActive");
+			}
+			else {
+				$song.removeClass("isActive");
 			}
 		}
 
@@ -233,7 +234,11 @@ var Jukebox = {
 		}
 
 		this.songs.push(song);
+
+		var $song = song.render();
+		this.dom.songs.append($song);
 		this.render();
+
 		return song;
 	},
 
@@ -256,6 +261,7 @@ class Song {
 		this.file = null;
 		this.meta = {};
 		this.audio = null;
+		this.$song = $('<div class="jukebox-songs-song"></div>');
 	}
 
 	/**
@@ -263,13 +269,14 @@ class Song {
 	 * @returns {jQuery} The song, not added to the dom yet
 	 */
 	render() {
-		var $song = $('<div class="jukebox-songs-song"></div>');
-		$song.append('<div class="jukebox-songs-song-pic"></div>');
-		$song.append('<div class="jukebox-songs-song-title">' + this.meta.title + '</div>');
-		$song.append('<div class="jukebox-songs-song-artist">' + this.meta.artist + '</div>');
-		$song.append('<div class="jukebox-songs-song-duration">' + "3:22" + '</div>');
-		$song.data("song", this);
-		return $song;
+		this.$song.html("");
+		this.$song.append('<div class="jukebox-songs-song-pic"></div>');
+		this.$song.append('<div class="jukebox-songs-song-title">' + this.meta.title + '</div>');
+		this.$song.append('<div class="jukebox-songs-song-artist">' + this.meta.artist + '</div>');
+		this.$song.append('<div class="jukebox-songs-song-duration">' + "3:22" + '</div>');
+		this.$song.data("song", this);
+
+		return this.$song;
 	}
 
 	/**
@@ -343,6 +350,10 @@ class SoundCloudSong extends Song {
 			.then(function(song) {
 				var uri = song.uri + "/stream?client_id=fd4e76fc67798bfa742089ed619084a6";
 				this.audio = new Audio(uri);
+			}.bind(this))
+			// Render our song with all that sweet sweet data
+			.then(function() {
+				this.render();
 			}.bind(this));
 	}
 }
