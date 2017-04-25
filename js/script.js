@@ -95,6 +95,11 @@ var Jukebox = {
 				});
 			}
 		}.bind(this));
+
+		this.dom.songs.on("click", ".jukebox-songs-song", function(ev) {
+			var song = $(ev.currentTarget).data("song");
+			this.play(song);
+		}.bind(this));
 	},
 
 	/**
@@ -262,6 +267,7 @@ class Song {
 		this.meta = {};
 		this.audio = null;
 		this.$song = $('<div class="jukebox-songs-song"></div>');
+		this.$song.data("song", this);
 	}
 
 	/**
@@ -274,7 +280,6 @@ class Song {
 		this.$song.append('<div class="jukebox-songs-song-title">' + this.meta.title + '</div>');
 		this.$song.append('<div class="jukebox-songs-song-artist">' + this.meta.artist + '</div>');
 		this.$song.append('<div class="jukebox-songs-song-duration">' + "3:22" + '</div>');
-		this.$song.data("song", this);
 
 		return this.$song;
 	}
