@@ -13,10 +13,7 @@
 		<div class="jukebox">
 			<div class="jukebox-header">
 				<div class="jukebox-header-logo"></div>
-				<label class="jukebox-header-upload">
-					Upload
-					<input type="file" accept="audio/*" multiple/>
-				</label>
+				<button class="jukebox-header-upload"></button>
 			</div>
 			<div class="jukebox-songs"></div>
 			<div class="jukebox-controls">
@@ -26,6 +23,39 @@
 				<button class="jukebox-controls-btn jukebox-controls-stop">Stop</button>
 				<button class="jukebox-controls-btn jukebox-controls-next">Next</button>
 				<button class="jukebox-controls-btn jukebox-controls-mute">Mute</button>
+			</div>
+		</div>
+
+		<div class="modal">
+			<div class="modal-box">
+				<div class="modal-box-header">
+					<h2 class="modal-box-header-title">
+						Import a Song
+					</h2>
+					<button class="modal-box-header-close">
+						X
+					</button>
+				</div>
+
+				<div class="modal-box-content">
+					<div class="modal-box-content-half upload">
+						<h3 class="upload-title">Upload a File</h3>
+						<input
+							type="file"
+							accept="audio/*"
+							multiple
+							class="upload-input js-upload"
+						/>
+					</div>
+					<div class="modal-box-content-divider">or</div>
+					<div class="modal-box-content-half scimport">
+						<h3 class="scimport-title">SoundCloud Import</h3>
+						<form class="scimport-form">
+							<input class="scimport-form-url" placeholder="SoundCloud URL"/>
+							<button class="scimport-form-submit">+</button>
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>

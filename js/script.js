@@ -31,8 +31,11 @@ var Jukebox = {
 			next: $(".jukebox-controls-next"),
 			prev: $(".jukebox-controls-previous"),
 			mute: $(".jukebox-controls-mute"),
-			upload: $(".jukebox-header-upload input"),
+			modalOpenBtn: $(".js-openmodal"),
+			modalCloseBtn: $(".js-closemodal"),
+			upload: $(".js-upload"),
 			songs: $(".jukebox-songs"),
+			modal: $(".modal"),
 		};
 
 		// Queue up some default songs
@@ -94,11 +97,21 @@ var Jukebox = {
 					artist: "Unknown",
 				});
 			}
+
+			this.closeModal();
 		}.bind(this));
 
 		this.dom.songs.on("click", ".jukebox-songs-song", function(ev) {
 			var song = $(ev.currentTarget).data("song");
 			this.play(song);
+		}.bind(this));
+
+		this.dom.modalOpenBtn.on("click", function() {
+			this.openModal();
+		}.bind(this));
+
+		this.dom.modalCloseBtn.on("click", function() {
+			this.closeModal();
 		}.bind(this));
 	},
 
@@ -247,9 +260,26 @@ var Jukebox = {
 		return song;
 	},
 
-	// volumeLevel should be a number between 0-100
+	/**
+	 * Set the volume of the music being played.
+	 * @param {number} volumeLevel - Number from 0-100, muted to max respectively
+	 */
 	setVolume: function(volumeLevel) {
 		this.volume = volumeLevel;
+	},
+
+	/**
+	 * Opens the upload modal
+	 */
+	openModal: function() {
+		this.dom.modal.addClass("isOpen");
+	},
+
+	/**
+	 * Closes the upload modal
+	 */
+	closeModal: function() {
+		this.dom.modal.removeClass("isOpen");
 	},
 };
 
